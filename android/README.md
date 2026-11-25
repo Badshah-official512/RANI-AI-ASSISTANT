@@ -24,7 +24,7 @@ run `gradle wrapper` once, or open the folder in Android Studio.)
 
 ## App URL
 
-`MainActivity.APP_URL` — default `https://rani-ai.pages.dev`.
+`MainActivity.APP_URL` — default `https://rani-ai-girlfrind.pages.dev`.
 Change it at release time to the deployed RANI web app URL. If the hosted
 app cannot be reached, a bundled offline page (`assets/offline.html`) is
 shown. The full web app is deliberately NOT bundled as local assets, so it

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rani-ai-girlfrind.pages.dev/sitemap.xml

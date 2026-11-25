@@ -23,7 +23,7 @@ import androidx.core.content.ContextCompat
  * This Activity loads that web app from a configurable URL.
  *
  * APP URL (change at release time — no recompile of the web app needed):
- *   - Default: BuildConfig.RANI_APP_URL if set, else https://rani-ai.pages.dev
+ *   - Default: BuildConfig.RANI_APP_URL if set, else https://rani-ai-girlfrind.pages.dev
  *   - Local test: override with a debug build that points at your dev server.
  * LOCAL-ASSET FALLBACK: if the hosted app cannot be reached, a bundled
  * offline page (assets/offline.html) is shown with a retry button. The full
@@ -42,8 +42,8 @@ import androidx.core.content.ContextCompat
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        // TODO (release): set to the deployed RANI web app URL, e.g. https://rani-ai.pages.dev
-        const val APP_URL = "https://rani-ai.pages.dev"
+        // Deployed RANI web app URL: https://rani-ai-girlfrind.pages.dev
+        const val APP_URL = "https://rani-ai-girlfrind.pages.dev"
         const val OFFLINE_URL = "file:///android_asset/offline.html"
     }
 

@@ -28,6 +28,6 @@ window.RANI_CONFIG = {
   firebaseProjectId: 'PASTE_YOUR_FIREBASE_PROJECT_ID_HERE',
   firebaseAppId: 'PASTE_YOUR_FIREBASE_APP_ID_HERE',
 
-  // Web app URL the Android wrapper loads (change at release time)
-  appUrl: 'https://rani-ai.pages.dev'
+  // Web app URL the Android wrapper loads (live site)
+  appUrl: 'https://rani-ai-girlfrind.pages.dev'
 };
