@@ -77,11 +77,15 @@ jobs:
       - name: Build debug APK (always)
         run: gradle assembleDebug --stacktrace
 
+      # NOTE (2026-11-25, run #10 failed here): actions/upload-artifact
+      # does NOT inherit defaults.run.working-directory, so its path is
+      # relative to the REPO ROOT, not android/. The APK is built at
+      # android/app/build/... — the path below must include android/.
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
           name: rani-ai-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
 
       # ---- Signed release: only when ALL signing secrets exist ----
@@ -117,5 +121,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: rani-ai-release-apk
-          path: app/build/outputs/apk/release/app-release.apk
+          path: android/app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
