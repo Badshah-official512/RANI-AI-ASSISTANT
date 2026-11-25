@@ -29,7 +29,7 @@ import androidx.core.content.ContextCompat
  * offline page (assets/offline.html) is shown with a retry button. The full
  * web app is NOT bundled as local assets in this wrapper by design — it is
  * deployed as a website so it can be updated without a new APK. If you want
- * a fully offline bundle, copy rani-web/* into app/src/main/assets/ and
+ * a fully offline bundle, copy the rani-web files into app/src/main/assets/ and
  * point the fallback URL at file:///android_asset/index.html instead.
  *
  * Permissions: mic + camera are requested at runtime (Android 6+) AND
