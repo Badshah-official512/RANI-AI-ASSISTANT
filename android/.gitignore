@@ -1,0 +1,14 @@
+# RANI AI Android wrapper — WebView around the phone web app (../rani-web/).
+
+# Android / Gradle
+*.iml
+.gradle/
+local.properties
+.idea/
+build/
+app/build/
+
+# Keystores and signing — NEVER commit. Signing comes from GitHub Secrets in CI.
+*.keystore
+*.jks
+keystore.properties

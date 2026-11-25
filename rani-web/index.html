@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#7c3aed">
+<meta name="description" content="RANI AI — your AI assistant, anytime 24/7. Voice, vision and website building on your phone.">
+<title>RANI AI</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+<link rel="apple-touch-icon" href="icons/icon.svg">
+<link rel="stylesheet" href="styles.css">
+<!-- Optional config: copy js/config.example.js to js/config.js and fill in your own keys.
+     No keys are shipped in this repo. Without a config the app runs in demo/offline mode. -->
+<script src="js/config.example.js"></script>
+<script src="js/config.js" onerror="/* no local config — placeholders apply */"></script>
+</head>
+<body data-theme="dark">
+<div id="app">
+
+  <!-- ===== Header ===== -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-orb" aria-hidden="true"><span>R</span></div>
+      <div>
+        <h1>RANI AI</h1>
+        <p id="statusLine">Ready — tap the orb to talk</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button id="authBtn" class="chip" type="button">Sign in</button>
+      <button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙️</button>
+    </div>
+  </header>
+
+  <!-- ===== Floating orb (RANI-style) ===== -->
+  <main class="stage">
+    <div class="orb-wrap">
+      <div id="orb" class="orb" role="button" tabindex="0" aria-label="Tap to talk to RANI">
+        <div class="orb-core"></div>
+        <div class="orb-ring"></div>
+        <div class="orb-ring r2"></div>
+      </div>
+      <p id="orbHint">Tap the orb to talk</p>
+      <div class="live-row">
+        <button id="micBtn" class="pill" type="button">🎙️ Talk</button>
+        <button id="stopBtn" class="pill ghost" type="button" disabled>■ Stop</button>
+      </div>
+    </div>
+
+    <!-- ===== Chat ===== -->
+    <section class="chat" aria-label="Chat with RANI">
+      <div id="messages" class="messages"></div>
+      <form id="chatForm" class="composer">
+        <input id="chatInput" type="text" placeholder="Ask RANI anything…" autocomplete="off" aria-label="Message RANI">
+        <button type="submit" aria-label="Send">➤</button>
+      </form>
+      <div class="quick-row">
+        <button class="quick" type="button" data-q="Camera on karo — ye kya hai?">📷 What is this?</button>
+        <button class="quick" type="button" data-q="Mere liye ek website banao">🌐 Build a website</button>
+        <button class="quick" type="button" data-q="Aaj ka plan banao">📋 Plan my day</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Vision ===== -->
+  <section class="panel vision-panel">
+    <h2>Vision</h2>
+    <div class="vision-btns">
+      <button id="cameraBtn" class="pill" type="button">📷 Camera vision</button>
+      <button id="screenBtn" class="pill" type="button">🖥️ Screen vision</button>
+      <button id="visionOffBtn" class="pill ghost" type="button" disabled>✕ Stop vision</button>
+    </div>
+    <video id="visionVideo" autoplay playsinline muted hidden></video>
+    <canvas id="visionCanvas" hidden></canvas>
+    <p id="visionNote" class="muted">Camera / screen frames are sent to Gemini only when you ask RANI to look. Nothing is recorded.</p>
+    <div class="vision-actions">
+      <input id="visionPrompt" type="text" placeholder="What should RANI look at? e.g. Is cheez ka naam batao" aria-label="Vision question">
+      <button id="askVisionBtn" class="pill" type="button" disabled>Ask RANI</button>
+    </div>
+  </section>
+
+  <!-- ===== Website builder (WebForge-style) ===== -->
+  <section class="panel builder-panel">
+    <h2>Website Builder</h2>
+    <p class="muted">Describe a website — RANI generates it with Gemini and shows a live preview.</p>
+    <textarea id="sitePrompt" rows="3" placeholder="e.g. A watches store website, dark theme, with hero, products and contact section…"></textarea>
+    <div class="builder-btns">
+      <button id="buildSiteBtn" class="pill" type="button">✨ Generate website</button>
+      <button id="downloadSiteBtn" class="pill ghost" type="button" disabled>⬇ Download .html</button>
+    </div>
+    <iframe id="sitePreview" title="Website preview" sandbox="allow-scripts" hidden></iframe>
+  </section>
+
+  <footer class="foot muted">RANI AI • by Badshah (Badshah222) • Android • Powered by Gemini</footer>
+</div>
+
+<!-- ===== Settings sheet (mirrors RANI's settings) ===== -->
+<div id="settingsSheet" class="sheet" hidden role="dialog" aria-label="Settings">
+  <div class="sheet-card">
+    <div class="sheet-head">
+      <h2>Settings</h2>
+      <button id="settingsClose" class="icon-btn" type="button" aria-label="Close settings">✕</button>
+    </div>
+
+    <label class="field"><span>Assistant name</span>
+      <input id="setName" type="text" value="RANI" maxlength="20">
+    </label>
+
+    <label class="field"><span>Voice — exactly RANI's voices</span>
+      <select id="setVoice">
+        <option value="female">Female (Aoede) — default</option>
+        <option value="male">Male (Charon)</option>
+      </select>
+    </label>
+
+    <label class="field"><span>Persona</span>
+      <select id="setPersona">
+        <option value="rani">RANI 🌸 (friendly)</option>
+        <option value="normal">Normal 👔 (professional)</option>
+      </select>
+    </label>
+
+    <label class="field"><span>Language</span>
+      <select id="setLang">
+        <option value="auto">Auto — RANI listens in your language</option>
+        <option value="en-US">English</option>
+        <option value="ur-PK">Urdu</option>
+        <option value="hi-IN">Hindi</option>
+        <option value="ps-AF">Pashto</option>
+        <option value="ar-SA">Arabic</option>
+      </select>
+    </label>
+
+    <label class="field"><span>Live voice model</span>
+      <select id="setLiveModel">
+        <option value="gemini-3.1-flash-live-preview">Gemini 3.1 Flash Live (RANI default)</option>
+        <option value="gemini-3.8-live">Gemini 3.8 Live</option>
+        <option value="gemini-2.5-flash-native-audio-latest">Gemini 2.5 Flash Native Audio</option>
+      </select>
+    </label>
+
+    <label class="field"><span>Theme</span>
+      <select id="setTheme">
+        <option value="dark">Dark (purple neon)</option>
+        <option value="light">Light</option>
+      </select>
+    </label>
+
+    <label class="check"><input id="setWake" type="checkbox"> Wake word (coming soon — currently tap to talk)</label>
+
+    <p class="muted small">Settings are saved on this device only. Sign-in uses Supabase + Firebase Auth — see docs/AUTH-SETUP.md. Keys are never stored in this app; add your own in js/config.js.</p>
+    <button id="saveSettings" class="pill wide" type="button">Save settings</button>
+    <button id="signOutBtn" class="pill ghost wide" type="button">Sign out</button>
+  </div>
+</div>
+
+<!-- ===== Auth sheet ===== -->
+<div id="authSheet" class="sheet" hidden role="dialog" aria-label="Sign in">
+  <div class="sheet-card">
+    <div class="sheet-head">
+      <h2>Sign in to RANI AI</h2>
+      <button id="authClose" class="icon-btn" type="button" aria-label="Close sign in">✕</button>
+    </div>
+    <p class="muted">Email + password or Google — same Supabase + Firebase Auth system as BADSHAH AI.</p>
+    <label class="field"><span>Email</span><input id="authEmail" type="email" placeholder="you@example.com" autocomplete="email"></label>
+    <label class="field"><span>Password</span><input id="authPass" type="password" placeholder="••••••••" autocomplete="current-password"></label>
+    <p id="authMsg" class="muted small"></p>
+    <button id="emailSignInBtn" class="pill wide" type="button">Sign in with email</button>
+    <button id="emailSignUpBtn" class="pill ghost wide" type="button">Create account</button>
+    <button id="googleSignInBtn" class="pill wide" type="button">G Sign in with Google</button>
+    <p class="muted small">Auth only activates after js/config.js is filled in (see docs/AUTH-SETUP.md). Until then this panel is a placeholder and sign-in will report “not configured”.</p>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

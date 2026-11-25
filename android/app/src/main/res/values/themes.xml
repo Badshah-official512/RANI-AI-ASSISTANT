@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Purple-neon theme to match the RANI web app. -->
+    <style name="Theme.RaniAI" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">#7C3AED</item>
+        <item name="colorPrimaryDark">#2E1065</item>
+        <item name="colorAccent">#A855F7</item>
+        <item name="android:windowBackground">#0D0716</item>
+        <item name="android:statusBarColor">#0D0716</item>
+    </style>
+</resources>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RANI AI — Admin</title>
+<link rel="stylesheet" href="styles.css">
+<script src="js/config.example.js"></script>
+<script src="js/config.js" onerror="/* no local config — placeholders apply */"></script>
+<style>
+  .admin-wrap { max-width: 720px; margin: 0 auto; padding: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); }
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 12px 0; }
+  .stat { background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: center; }
+  .stat b { font-size: 1.4rem; display: block; }
+</style>
+</head>
+<body data-theme="dark">
+<div class="admin-wrap">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-orb" aria-hidden="true"><span>R</span></div>
+      <div><h1>RANI AI — Admin</h1><p id="adminStatus">Login required</p></div>
+    </div>
+    <a class="chip" href="index.html">← Back to app</a>
+  </header>
+
+  <!-- Login gate: real check happens against Supabase/Firebase once configured.
+       Until then this is a shell — it refuses entry and says so. -->
+  <section class="panel" id="loginPanel">
+    <h2>Admin sign-in</h2>
+    <p class="muted">Admins only. Sign in with an admin email + password (Supabase / Firebase Auth).</p>
+    <label class="field"><span>Email</span><input id="adminEmail" type="email" placeholder="admin@example.com"></label>
+    <label class="field"><span>Password</span><input id="adminPass" type="password" placeholder="••••••••"></label>
+    <p id="adminMsg" class="muted small"></p>
+    <button id="adminLoginBtn" class="pill wide" type="button">Sign in as admin</button>
+  </section>
+
+  <section id="dashPanel" hidden>
+    <div class="stat-grid">
+      <div class="stat"><b id="statUsers">—</b><span class="muted">Users</span></div>
+      <div class="stat"><b id="statChats">—</b><span class="muted">Chats (7d)</span></div>
+      <div class="stat"><b id="statSites">—</b><span class="muted">Sites built</span></div>
+    </div>
+    <section class="panel">
+      <h2>Users</h2>
+      <p class="muted small">Loaded from Supabase once configured. Placeholder rows below — no real user data is shipped in this file.</p>
+      <table>
+        <thead><tr><th>Email</th><th>Provider</th><th>Joined</th><th>Status</th></tr></thead>
+        <tbody id="usersBody">
+          <tr><td colspan="4" class="muted">No data — connect Supabase (docs/AUTH-SETUP.md) to load users.</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="panel">
+      <h2>Notes</h2>
+      <ul class="muted">
+        <li>Admin role is enforced in Supabase (row-level security / a profiles.is_admin flag), never by hiding this page.</li>
+        <li>Never paste a service-role key into this page or any client file — service keys stay server-side only.</li>
+      </ul>
+      <button id="adminLogoutBtn" class="pill ghost" type="button">Sign out</button>
+    </section>
+  </section>
+</div>
+<script>
+(function () {
+  var CFG = window.RANI_CONFIG || {};
+  var configured = Boolean(CFG.supabaseUrl && CFG.supabaseUrl.indexOf('PASTE_') !== 0);
+  var msg = document.getElementById('adminMsg');
+  document.getElementById('adminLoginBtn').addEventListener('click', function () {
+    if (!configured) {
+      msg.textContent = 'Auth not configured yet — js/config.js mein Supabase + Firebase details add karein (docs/AUTH-SETUP.md). Admin login uske baad active hoga.';
+      return;
+    }
+    msg.textContent = 'Config mil gayi — admin check Supabase/Firebase se hoga (wiring step, see docs/AUTH-SETUP.md).';
+  });
+  document.getElementById('adminLogoutBtn').addEventListener('click', function () {
+    document.getElementById('dashPanel').hidden = true;
+    document.getElementById('loginPanel').hidden = false;
+    document.getElementById('adminStatus').textContent = 'Login required';
+  });
+  if (!configured) {
+    document.getElementById('adminStatus').textContent = 'Not configured — demo shell only';
+  }
+})();
+</script>
+</body>
+</html>

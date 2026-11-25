@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rani-termux"
+version = "0.4.1"
+description = "RANI AI assistant for Termux (Android) and Linux: chat, voice, 148+ languages and device control via Gemini"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "Proprietary" }
+keywords = ["termux", "android", "assistant", "gemini", "voice", "rani"]
+classifiers = [
+  "Environment :: Console",
+  "Operating System :: Android",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+]
+dependencies = []
+
+[project.scripts]
+rani-termux = "rani_termux.cli:main"
+
+[tool.setuptools]
+packages = ["rani_termux"]
+
+[tool.setuptools.package-data]
+rani_termux = ["assets/*.jpg"]

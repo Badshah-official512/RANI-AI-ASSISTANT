@@ -1,0 +1,81 @@
+# RANI - MANIFEST.in  v5  [SECURE]
+# PyPI build mein Firebase JSON KABHI include nahi hoga
+#
+# NOTE: keep this file plain ASCII. distutils' sdist template reader opens
+# MANIFEST.in with the platform default text encoding (often cp1252 on
+# Windows, not UTF-8) - any em-dash/box-drawing character here breaks
+# `pip install` for every user whose system default isn't UTF-8.
+
+include README.md
+include LICENSE
+include pyproject.toml
+include requirements.txt
+
+# Root Python modules
+include aria.py
+include aria_ui.py
+include rani_ui.py
+include rani_pages.py
+include rani_actions.py
+include rani_quick_features.py
+include rani_edge_glow.py
+include rani_float_orb.py
+include rani_guardian.py
+include rani_autostart.py
+include rani_prefs.py
+include rani_slot.py
+include rani_lang.py
+include rani_splash.py
+include rani_apps.py
+include rani_spotify.py
+include rani_studio.py
+recursive-include aria_modules/assets *.png
+recursive-include aria_modules/assets *.jpg
+recursive-include aria_modules/assets *.ttf
+include aria_daemon.py
+include aria_startup.py
+include Aria_office_manage.py
+include camera_vision_module.py
+include main_hotkey.py
+include Main_normal.py
+include normal_prompt.py
+include prompt.py
+include screen_share_module.py
+include whatsapp_file_sender.py
+
+# Root Python modules - RANI Coder bridge
+include rani_coder_integration.py
+
+# Packages
+recursive-include rani *.py
+recursive-include aria_modules *.py
+include aria_modules/haarcascade_frontalface_default.xml
+recursive-include website_builder *.py *.json *.html *.css *.js
+
+# RANI Coder - compiled engine only (never src/ or node_modules/)
+include rani_coder/__init__.py
+include rani_coder/package.json
+include rani_coder/package-lock.json
+include rani_coder/README.md
+recursive-include rani_coder/dist *
+
+# == SECURITY EXCLUSIONS ========================================
+# Firebase Admin SDK JSON - KABHI PyPI mein nahi jaayega
+global-exclude *adminsdk*.json
+global-exclude *firebase*adminsdk*.json
+global-exclude *service-account*.json
+global-exclude *-firebase-adminsdk*.json
+
+# admin_and_build_tools - developer only, not for end users
+prune admin_and_build_tools
+
+# Standard
+global-exclude *.pyc
+global-exclude __pycache__
+global-exclude .env
+global-exclude .gitignore
+prune dist
+prune build
+prune *.egg-info
+prune dist_output
+prune backend
