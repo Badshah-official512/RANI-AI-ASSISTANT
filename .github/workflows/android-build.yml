@@ -55,8 +55,17 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      # NOTE (2026-11-25, run #1 failed here): do NOT use
+      # android-actions/setup-android — it tries to install the obsolete
+      # 'tools' SDK package and sdkmanager fails with exit code 1.
+      # The ubuntu-latest runner already ships a working Android SDK
+      # (ANDROID_HOME is set by the runner image), so no SDK setup step
+      # is needed. This is the same setup that builds BADSHAH AI.
+      - name: Check preinstalled Android SDK
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          ls "$ANDROID_HOME/build-tools" | sort -V | tail -3
+          ls "$ANDROID_HOME/cmdline-tools"
 
       # No gradlew wrapper script is committed in this repo, so use the
       # Gradle installation directly (Gradle 8.7 matches AGP 8.5.2).
